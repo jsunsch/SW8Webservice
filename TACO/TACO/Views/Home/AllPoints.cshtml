@@ -1,0 +1,33 @@
+﻿@model IEnumerable<TACO.Model.Domain.POI>
+@{
+    ViewBag.Title = "AllPoints";
+}
+
+<h2>AllPoints</h2>
+
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Point Name</th>
+            <th>Point Coordinate</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    @if (Model != null)
+    {
+        foreach (var point in Model)
+        { 
+        <tr>
+            <td>@point.Id</td>
+            <td>@point.PointName</td>
+            <td>@point.PointCoord.AsText()</td>
+        </tr>
+        }
+    }
+
+    </tbody>
+</table>
