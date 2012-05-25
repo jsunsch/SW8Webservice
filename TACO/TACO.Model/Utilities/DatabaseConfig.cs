@@ -19,7 +19,7 @@ namespace TACO.Model.Utilities
                                 "Data Source=0e9e9376-a65b-4c0f-8a53-a000008e4329.sqlserver.sequelizer.com;Persist Security Info=True;User ID=cyakspyqlpqyrglu;Password=2eoFV8iBpHZbBD37CcbbtGrnjudunDm5xFZy6jNfXHiiT5m5RPCMoyCtVavA5WoS")
                         .ShowSql()
                         .Dialect("NHibernate.Spatial.Dialect.MsSql2008GeographyDialect,NHibernate.Spatial.MsSql2008"))
-                        .Mappings(x => x.FluentMappings.AddFromAssembly(typeof(POIMap).Assembly));
+                        .Mappings(x => x.FluentMappings.AddFromAssemblyOf<POIMap>());
             return cfg;
     }
     }

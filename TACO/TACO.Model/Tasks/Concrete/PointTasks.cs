@@ -58,11 +58,25 @@ namespace TACO.Model.Tasks.Concrete
             return output;
         }
 
+        public IEnumerable<POI> GetAllPOI()
+        {
+            return repos.Query().Take(100000).List();
+        }
+
+        public POI GetPointByID(int pointID)
+        {
+            return repos.Get(pointID);
+        }
 
         public POI CreatePoint(string name, IPoint coords)
         {
+            return CreatePoint(name, null, coords);
+        }
+
+        public POI CreatePoint(string name, string description, IPoint coords)
+        {
             coords.SRID = 4326;
-            POI point = new POI { PointName = name, PointCoord = coords };
+            POI point = new POI { PointName = name, PointCoord = coords, PointDescription = description };
 
             using (repos.DBContext.BeginTransaction())
             {
@@ -72,7 +86,7 @@ namespace TACO.Model.Tasks.Concrete
                     repos.DBContext.SubmitChanges();
                     repos.DBContext.CommitTransaction();
                 }
-                catch 
+                catch
                 {
                     repos.DBContext.RollbackTransaction();
                     point = null;

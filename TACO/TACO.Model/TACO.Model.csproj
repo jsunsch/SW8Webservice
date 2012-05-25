@@ -99,9 +99,12 @@
     <Compile Include="IoC\Installers\TaskInstaller.cs" />
     <Compile Include="IoC\MVC\WindsorControllerFactory.cs" />
     <Compile Include="Mapping\POIMap.cs" />
+    <Compile Include="Mapping\TextMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\Abstract\IPointTasks.cs" />
+    <Compile Include="Tasks\Abstract\ITextTasks.cs" />
     <Compile Include="Tasks\Concrete\PointTasks.cs" />
+    <Compile Include="Tasks\Concrete\TextTasks.cs" />
     <Compile Include="Utilities\DatabaseConfig.cs" />
   </ItemGroup>
   <ItemGroup>

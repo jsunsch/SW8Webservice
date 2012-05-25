@@ -14,11 +14,12 @@ namespace TACO.Model.Mapping
         {
             ImportType<GisSharpBlog.NetTopologySuite.Geometries.Point>();
 
-            EntityName("POI");
+            Table("POI");
             Id(p => p.Id).Column("PointID").Not.Nullable().GeneratedBy.Identity();
             Map(p => p.PointName).Not.Nullable();
             Map(p => p.PointCoord).CustomType(typeof(Wgs84GeographyType));
-
+            Map(p => p.PointDescription).Nullable();
+            HasMany(p => p.Texts).KeyColumn("PointID").Inverse().Cascade.All();
         }
 
         public class Wgs84GeographyType : MsSql2008GeographyType
