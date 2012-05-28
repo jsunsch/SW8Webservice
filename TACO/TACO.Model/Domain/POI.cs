@@ -13,7 +13,7 @@ namespace TACO.Model.Domain
         public virtual IPoint PointCoord { get; set; }
         public virtual String PointDescription { get; set; }
         public virtual IEnumerable<Text> Texts { get; set; }
-
+        
         public POI()
         {
             Texts = new List<Text>();

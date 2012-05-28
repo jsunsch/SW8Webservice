@@ -1,4 +1,4 @@
-﻿using Sstem;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +10,11 @@ namespace TACO.Model.Domain
     {
         public virtual string AttractionName { get; set; }
         public virtual string AttractionDescription { get; set; }
+        public virtual IEnumerable<IndoorPOI> IndoorPOIs { get; set; }
+
+        public Attraction()
+        {
+            IndoorPOIs = new List<IndoorPOI>();
+        }
     }
 }

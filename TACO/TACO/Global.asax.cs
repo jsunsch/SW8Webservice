@@ -31,6 +31,11 @@ namespace TACO
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                "CreateAttraction", // Route name
+                "CreateAttraction/{name}/{description}", // URL with parameters
+                new { controller = "Home", action = "CreateAttraction", description = UrlParameter.Optional } // Parameter defaults
+            );
+            routes.MapRoute(
                 "CreatePOI", // Route name
                 "CreatePOI/{name}/{lon}/{lat}/{description}", // URL with parameters
                 new { controller = "Home", action = "CreatePOI", description = UrlParameter.Optional } // Parameter defaults

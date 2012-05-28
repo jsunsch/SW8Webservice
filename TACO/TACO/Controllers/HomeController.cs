@@ -15,11 +15,13 @@ namespace TACO.Controllers
     {
         IPointTasks pointTasks = null;
         ITextTasks textTasks = null;
+        IIndoorTasks indoorTasks = null;
 
-        public HomeController(IPointTasks pointTasks, ITextTasks textTasks)
+        public HomeController(IPointTasks pointTasks, ITextTasks textTasks, IIndoorTasks indoorTasks)
         {
             this.pointTasks = pointTasks;
             this.textTasks = textTasks;
+            this.indoorTasks = indoorTasks;
         }
 
         [HttpGet]
@@ -60,58 +62,21 @@ namespace TACO.Controllers
             return Json(GetJSONList(poi.Texts), JsonRequestBehavior.AllowGet);
         }
 
-        [NonAction]
-        private List<object> GetJSONList(IEnumerable<POI> obj)
-        {
-        
-            List<object> list = new List<object>();
-            foreach (var poi in obj)
-                list.Add(GetJSONSingle(poi));
-
-            return list;
-        }
-        [NonAction]
-        private List<object> GetJSONList(IEnumerable<Text> obj)
-        {
-
-            List<object> list = new List<object>();
-            foreach (var text in obj)
-                list.Add(new { Id = text.Id, Name = text.TextName, Text = text.TextContent, PointID = text.POI.Id });
-
-            return list;
-        }
-        [NonAction]
-        private string ConCatTexts(IEnumerable<Text> obj)
-        {
-            String output = "";
-
-            foreach (var text in obj)
-                output += text.TextContent + "<;&>||#";
-            return output;
-        }
-
-        [NonAction]
-        private object GetJSONSingle(POI poi)
-        {
-
-            object single = new { 
-                Id = poi.Id, 
-                Name = poi.PointName, 
-                Longitude = poi.PointCoord.X, 
-                Latitude = poi.PointCoord.Y, 
-                Description = poi.PointDescription,
-                Texts = GetJSONList(poi.Texts)
-            };
-
-            return single;
-        }
-
         [HttpGet]
         public JsonResult CreatePOI(string name, double lon, double lat, string description = null)
         {
             var poi = pointTasks.CreatePoint(name, description, new Point(lon, lat));
 
             return Json(GetJSONSingle(poi), JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public JsonResult CreateAttraction(string name, string description = null)
+        {
+            var attr = indoorTasks.CreateAttraction(name, description);
+
+            return Json(GetJSONSingle(attr), JsonRequestBehavior.AllowGet);
         }
 
         public string ResetData()
@@ -142,6 +107,125 @@ namespace TACO.Controllers
 
             return "Mjello";
         }
+
+
+
+
+        #region Non-actions
+
+
+
+        [NonAction]
+        private List<object> GetJSONList(IEnumerable<POI> obj)
+        {
+
+            List<object> list = new List<object>();
+            foreach (var poi in obj)
+                list.Add(GetJSONSingle(poi));
+
+            return list;
+        }
+
+        [NonAction]
+        private List<object> GetJSONList(IEnumerable<IndoorPOI> obj)
+        {
+            List<object> list = new List<object>();
+            foreach (var poi in obj)
+                list.Add(GetJSONSingle(poi));
+
+            return list;
+        }
+        [NonAction]
+        private List<object> GetJSONList(IEnumerable<WifiMeassure> obj)
+        {
+            List<object> list = new List<object>();
+            foreach (var poi in obj)
+                list.Add(GetJSONSingle(poi));
+
+            return list;
+        }
+        [NonAction]
+        private List<object> GetJSONList(IEnumerable<Text> obj)
+        {
+
+            List<object> list = new List<object>();
+            foreach (var text in obj)
+                list.Add(new { Id = text.Id, Name = text.TextName, Text = text.TextContent, PointID = text.POI.Id });
+
+            return list;
+        }
+
+        [NonAction]
+        private string ConCatTexts(IEnumerable<Text> obj)
+        {
+            String output = "";
+
+            foreach (var text in obj)
+                output += text.TextContent + "<;&>||#";
+            return output;
+        }
+
+        [NonAction]
+        private object GetJSONSingle(POI poi)
+        {
+
+            object single = new
+            {
+                Id = poi.Id,
+                Name = poi.PointName,
+                Longitude = poi.PointCoord.X,
+                Latitude = poi.PointCoord.Y,
+                Description = poi.PointDescription,
+                Texts = GetJSONList(poi.Texts)
+            };
+
+            return single;
+        }
+        [NonAction]
+        private object GetJSONSingle(Attraction attr)
+        {
+
+            object single = new
+            {
+                Id = attr.Id,
+                Name = attr.AttractionName,
+                Description = attr.AttractionName,
+                Points = GetJSONList(attr.IndoorPOIs)
+            };
+
+            return single;
+        }
+        [NonAction]
+        private object GetJSONSingle(IndoorPOI poi)
+        {
+
+            object single = new
+            {
+                Id = poi.Id,
+                Name = poi.IndoorPOIName,
+                Description = poi.IndoorPOIDescription,
+                Texts = GetJSONList(poi.Texts),
+                WifiMeassures = GetJSONList(poi.WifiMeassures)
+            };
+
+            return single;
+        }
+        [NonAction]
+        private object GetJSONSingle(WifiMeassure wifi)
+        {
+
+            object single = new
+            {
+                Id = wifi.Id,
+                BSID = wifi.BSID,
+                SignalStrength = wifi.SignalStrength
+            };
+
+            return single;
+        }
+
+
+        #endregion
 
     }
 }
